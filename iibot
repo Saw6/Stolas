@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-: "${ircdir:=$HOME/ircbot}"
-: "${nickname:=amabot}"
+: "${ircdir:=$HOME/Documents/IRC}"
+: "${nickname:=Stolas$RANDOM}"
 
 declare -A networks=(
-    [irc.freenode.net]="#foss-aueb"
+    [irc.rizon.net]="#stolas"
 )
 
 # some privacy please, thanks
@@ -19,13 +19,14 @@ monitor() {
             # strip < and >. if msg is by ourself ignore it
             nick="${nick:1:-1}"
             [[ "$nick" == "$nickname" ]] && continue
+	    # if msg is by owner, do salutations.sh
 
             # if msg contains a url, transform to url command
             [[ "$msg" =~ https?:// ]] && \
-                exec iicmd "$nick" "url ${msg#* }" "$ircdir" "$network" "$channel" "$nickname" | fold -w 255 &
-            # if msg is a command, invoke iicmd
-            [[ "$msg" =~ ^! ]] && \
-                exec iicmd "$nick" "${msg#\!}" "$ircdir" "$network" "$channel" "$nickname" | fold -w 255 &
+                . ./iicmd "$nick" "url ${msg#* }" "$ircdir" "$network" "$channel" "$nickname" | fold -w 255 &
+            # if msg is a command, invoke iicmd 
+            [[ "$msg" =~ ^: ]] && \
+                . ./iicmd "$nick" "${msg#\:}" "$ircdir" "$network" "$channel" "$nickname" | fold -w 255 &
         done > "$ircdir/$network/$channel/in"
 }
 
@@ -35,7 +36,7 @@ for network in "${!networks[@]}"; do
         rm -f "$ircdir/$network/in"
 
         # connect to netwrok - password is set through the env var IIPASS
-        ii -i "$ircdir" -n $nickname -s "$network" -e ssl &
+        ii -i "$ircdir" -n $nickname -s "$network" &
         pid="$!"
 
         # wait for the connection

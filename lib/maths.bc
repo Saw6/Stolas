@@ -1,0 +1,26 @@
+#!/usr/bin/bc -l
+scale=10
+
+pi = 4 * a(1)
+
+# Radians -> Degrees
+define rade(x) {
+  z = x * 180 / pi
+  return(z)
+}
+
+# Degrees -> Radians
+define dera(x) {
+  z = x * pi / 180
+  return(z)
+}
+
+# Factorial
+define fact(x) {
+  y = 1; z = 1 
+  while ( y < x ) {
+    y += 1
+    z *= y
+  }
+  return(z)
+}
