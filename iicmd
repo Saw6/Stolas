@@ -26,19 +26,19 @@ commands=(
   list
   calc
   url
-  quit
+  meurt
 )
 
 case "$cmd" in
     list)
-		[[ -n "$nicks" ]] && printf -- "%s: %s \n" "$nicks" "${commands[*]}" || printf -- "%s: %s \n" "$nick" "${commands[*]}" ;;
+	[[ -n "$nicks" ]] && printf -- "%s: %s \n" "$nicks" "${commands[*]}" || printf -- "%s: %s \n" "$nick" "${commands[*]}" ;;
 
     calc)
         [[ -n "$extra" ]] && . ./modules/calc.sh "$extra" ;;
     url)
-	    . ./modules/url.sh "$extra" ;;
-    kill)
-	    . ./modules/quit.sh "$nick" ;;
+        . ./modules/url.sh "$extra" ;;
+    meurt)
+        . ./modules/meurt.sh "$nick" ;;
     *)
-	    printf -- "Je ne connais pas cette commande. Essayez :list pour connaitre toutes les commandes disponibles. \n" ;;
+        printf -- "Je ne connais pas cette commande. Essayez :list pour connaitre toutes les commandes disponibles. \n" ;;
 esac
