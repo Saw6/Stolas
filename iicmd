@@ -35,6 +35,8 @@ case "$cmd" in
 
     calc)
         [[ -n "$extra" ]] && . ./modules/calc.sh "$extra" ;;
+    temp)
+	. ./modules/temps.sh "$extra" ;;
     url)
         . ./modules/url.sh "$extra" ;;
     meurt)
